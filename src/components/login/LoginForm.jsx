@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { login } from "../../services/auth.service";
 import { guardarToken } from "../../utils/auth";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
-
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] =
+    const navigate = useNavigate()
+    const [usuario, setUsuario] = useState("");
+    const [contrasena, setContrasena] = useState("");
+    const [showPassword, setMostrarContrasena] =
         useState(false);
+    const [error, setError] = useState("")
 
     const handleSubmit = async (e) => {
 
@@ -16,18 +18,17 @@ export default function LoginForm() {
         try {
 
             const response =
-                await login(email, password);
+                await login(usuario, contrasena);
 
             guardarToken(response.token);
 
-            window.location.href =
-                "/dashboard";
-
-        } catch {
-
-            alert(
-                "Correo o contraseña incorrectos"
-            );
+            navigate("/login")
+        } catch(err) {
+            console.log(err);
+            
+            setError(
+                err.response?.data?.mensaje || "Usuario o contraseña incorrectos" //Muestra el mensaje de la API
+            )
         }
     };
 
@@ -40,7 +41,7 @@ export default function LoginForm() {
                     type="text"
                     className="floating-input"
                     placeholder=" "
-                    value={email}
+                    value={usuario}
                     onChange={(e) =>
                         setUsuario(
                             e.target.value
@@ -65,9 +66,9 @@ export default function LoginForm() {
                     }
                     className="floating-input"
                     placeholder=" "
-                    value={password}
+                    value={contrasena}
                     onChange={(e) =>
-                        setPassword(
+                        setContrasena(
                             e.target.value
                         )
                     }
@@ -78,11 +79,16 @@ export default function LoginForm() {
                     Contraseña
                 </label>
 
+               {
+                error && (
+                    <p style={{color:"white"}}>{error}</p>
+                )
+               } 
                 <button
                     type="button"
                     className="toggle-password"
                     onClick={() =>
-                        setShowPassword(
+                        setMostrarContrasena(
                             !showPassword
                         )
                     }
