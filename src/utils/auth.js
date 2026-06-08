@@ -51,19 +51,23 @@ export const obtenerDatosToken = () => {
 };
 
 export const esAdmin = () => {
-    const user = getUserData();
+    const user = obtenerDatosToken();
 
     return user?.role === "Administrador";
 };
 
 export const esSuperAdmin = () => {
-    const user = getUserData();
+    const user = obtenerDatosToken();
 
     return user?.role === "S_Administrador";
 };
 
 export const esCliente = () => {
-    const user = getUserData();
+    const user = obtenerDatosToken();
 
     return user?.role === "Cliente";
 };
+
+export const obtenerUsuario = () => {
+    return user?.username
+}

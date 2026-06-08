@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { login } from "../../services/auth.service";
 import { guardarToken } from "../../utils/auth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
     const navigate = useNavigate()
@@ -22,7 +22,7 @@ export default function LoginForm() {
 
             guardarToken(response.token);
 
-            navigate("/login")
+            navigate("/dashboard")
         } catch(err) {
             console.log(err);
             
@@ -106,9 +106,9 @@ export default function LoginForm() {
             </button>
 
             <div className="forgot-pwd">
-                <a href="#">
+                <Link to={"/reset-password"}>
                     ¿Olvidaste la contraseña?
-                </a>
+                </Link>
             </div>
 
             <div className="divider">
@@ -119,9 +119,9 @@ export default function LoginForm() {
                 <p>
                     ¿No tienes una cuenta?
                     {" "}
-                    <a href="#">
-                        Regístrate
-                    </a>
+                    <Link to={"/registro"}>
+                    Registrate
+                    </Link>
                 </p>
             </div>
 
