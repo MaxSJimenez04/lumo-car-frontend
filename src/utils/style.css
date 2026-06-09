@@ -370,3 +370,52 @@ body {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
 }
+
+.profile-photo-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: auto;
+}
+
+.perfil-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Overlay oscuro */
+.photo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+/* Botón centrado */
+.photo-edit-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px;
+    opacity: 0;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+/* Hover effect */
+.profile-photo-wrapper:hover .photo-overlay,
+.profile-photo-wrapper:hover .photo-edit-btn {
+    opacity: 1;
+}
+

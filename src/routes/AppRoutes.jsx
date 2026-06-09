@@ -3,6 +3,7 @@ import LoginView from "../pages/LoginView"
 import ResetPasswordView from "../pages/ResetPasswordView"
 import DashboardView from "../pages/DashboardView"
 import CrearCuentaClienteView from "../pages/CrearCuentaClienteView"
+import PerfilView from "../pages/PerfilView"
 
 function AppRoutes() {
     return (
@@ -11,6 +12,7 @@ function AppRoutes() {
             <Route path="/reset-password" element={<ResetPasswordView/>}/>
             <Route path="/dashboard" element={<DashboardView/>}/>
             <Route path="/registro" element={<CrearCuentaClienteView/>}/>
+            <Route path="/perfil" element={<PerfilView/>}/>
         </Routes>
     )
 }

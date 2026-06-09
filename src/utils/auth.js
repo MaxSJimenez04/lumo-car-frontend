@@ -15,7 +15,7 @@ export const eliminarToken = () => {
 };
 
 export const estaAutenticado = () => {
-    return !!getToken();
+    return !!obtenerToken();
 };
 
 export const obtenerDatosToken = () => {
@@ -28,7 +28,7 @@ export const obtenerDatosToken = () => {
     try {
 
         const decoded = jwtDecode(token);
-
+        
         return {
             username:
                 decoded.unique_name ||
@@ -69,5 +69,6 @@ export const esCliente = () => {
 };
 
 export const obtenerUsuario = () => {
+    const user = obtenerDatosToken();
     return user?.username
 }
