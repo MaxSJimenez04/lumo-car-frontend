@@ -3,19 +3,19 @@ import { jwtDecode } from "jwt-decode";
 const TOKEN_KEY = "jwt";
 
 export const guardarToken = (token) => {
-    localStorage.setItem(TOKEN_KEY, token);
+    localStorage.setItem(TOKEN_KEY, token)
 };
 
 export const obtenerToken = () => {
-    return localStorage.getItem(TOKEN_KEY);
+    return localStorage.getItem(TOKEN_KEY)
 };
 
 export const eliminarToken = () => {
-    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(TOKEN_KEY)
 };
 
 export const estaAutenticado = () => {
-    return !!getToken();
+    return !!obtenerToken();
 };
 
 export const obtenerDatosToken = () => {
@@ -28,7 +28,7 @@ export const obtenerDatosToken = () => {
     try {
 
         const decoded = jwtDecode(token);
-
+        
         return {
             username:
                 decoded.unique_name ||
@@ -69,5 +69,6 @@ export const esCliente = () => {
 };
 
 export const obtenerUsuario = () => {
+    const user = obtenerDatosToken();
     return user?.username
 }

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { login } from "../../services/auth.service";
-import { guardarToken } from "../../utils/auth";
+import { eliminarToken, guardarToken } from "../../utils/auth";
 import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 export default function LoginForm() {
     const navigate = useNavigate()
@@ -19,8 +20,9 @@ export default function LoginForm() {
 
             const response =
                 await login(usuario, contrasena);
-
-            guardarToken(response.token);
+                
+            eliminarToken()
+            guardarToken(response.jwt);
 
             navigate("/dashboard")
         } catch(err) {
