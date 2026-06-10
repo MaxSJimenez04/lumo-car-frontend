@@ -1,10 +1,10 @@
-import PerfilClienteForm from "../components/perfil/PerfilClienteForm"
+import PerfilForm from "../components/perfil/PerfilForm"
 
 export default function PerfilView(){
     return(
     <div>
-        <PerfilClienteForm>
-        </PerfilClienteForm>
+        <PerfilForm>
+        </PerfilForm>
     </div>
     )
 }

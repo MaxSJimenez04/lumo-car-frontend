@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { consultarPerfil, actualizar, consultarFoto ,asociarFoto } from "../../services/usuarios.service";
-import { subirArchivo } from "../../services/archivos.service";
+import { subirFotoPerfil } from "../../services/archivos.service";
 import { obtenerUsuario } from "../../utils/auth";
 
-export default function PerfilClienteForm(){
+export default function PerfilForm(){
     const [datosUsuario, setDatos] = useState({
         nombre: "",
         apellidos: "",
@@ -12,11 +12,13 @@ export default function PerfilClienteForm(){
         usuario: "",
         fecha:"",
     })
-
+    const [idFoto, setIdFoto] = useState(null)
     const [imagenPerfil, setFoto] = useState(null);
     const [archivoFoto, setArchivoFoto] = useState(null);
     const [modoEdicion, setModoEdicion] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [datosOriginales, setDatosOriginales] = useState(null);
+    const [imagenOriginal, setImagenOriginal] = useState(null);
 
    useEffect(() => {
 
@@ -33,16 +35,20 @@ export default function PerfilClienteForm(){
 
             const imagenURL = URL.createObjectURL(respuestaFoto)
 
-            setDatos({
-                nombre: respuesta.nombre,
-                apellidos: respuesta.apellidos,
-                correo: respuesta.correo,
-                telefono: respuesta.telefono,
-                fecha: respuesta.fecha_nacimiento,
-                usuario
-            })
+            const datos = {
+                nombre: respuesta.nombre ?? "",
+                apellidos: respuesta.apellidos ?? "",
+                correo: respuesta.correo ?? "",
+                telefono: respuesta.telefono ?? "",
+                fecha: respuesta.fecha_nacimiento ?? "",
+                usuario: usuario ?? ""
+            }
 
-            setFoto(imagenURL)
+            setDatos(datos);
+            setDatosOriginales(datos);
+
+            setFoto(imagenURL);
+            setImagenOriginal(imagenURL);
 
         }
         catch (error) {
@@ -69,20 +75,32 @@ export default function PerfilClienteForm(){
     const handleSumbit = async (e) => {
         e.preventDefault()
         try {
-            let fotoId = null
+            const formData = new FormData();
             if (archivoFoto) {
 
-                const archivoRenombrado = crearArchivoRenombrado(
+                const nuevoNombre = generarNombreArchivo(
                 datosUsuario.usuario,
                 archivoFoto
                 );
 
-                formData.append("file", archivoRenombrado);
+                const archivoRenombrado = new File(
+                    [archivoFoto],
+                    nuevoNombre,
+                    {
+                        type: archivoFoto.type
+                    }
+                );
 
-                const respuestaFoto = await subirArchivo(formData)
+                formData.append(
+                    "file",
+                    archivoRenombrado
+                );
+                formData.append("carpeta", "usuarios");
+
+                const respuestaFoto = await subirFotoPerfil(formData)
 
                 // suponiendo que regresa id o url
-                fotoId = respuestaFoto.id
+                setIdFoto(respuestaFoto.detalles.id)
 
                 const usuarioActualizado = {
                     nombre: datosUsuario.nombre,
@@ -90,13 +108,14 @@ export default function PerfilClienteForm(){
                     correo: datosUsuario.correo,
                     telefono: datosUsuario.telefono,
                     usuario: datosUsuario.usuario,
-                    fecha: datosUsuario.fecha,
-                    fotoId: fotoId // puede ser null si no cambió imagen 
+                    fecha: datosUsuario.fecha, // puede ser null si no cambió imagen 
                 }
             }
-            if (fotoId) {
-                await asociarFoto(datosUsuario.usuario, fotoId);
+            if (idFoto) {
+                await asociarFoto(datosUsuario.usuario, idFoto);
             }
+
+            const respuestaUsuario = await actualizar(datosUsuario, datosUsuario.usuario)
 
             console.log("Perfil actualizado:", respuestaUsuario);
 
@@ -118,6 +137,15 @@ export default function PerfilClienteForm(){
 
         // limpiar archivo nuevo seleccionado
         setArchivoFoto(null);
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        setDatos(prev => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
     const handleFotoChange = (e) => {
@@ -153,7 +181,7 @@ export default function PerfilClienteForm(){
                 </button>
             </div>
 
-            <form className="perfil-form">
+            <form className="perfil-form" onSubmit={handleSumbit}>
 
                 {/* Foto de perfil */}
                 <div className="profile-photo-wrapper">
@@ -185,13 +213,10 @@ export default function PerfilClienteForm(){
                     <label>Nombre</label>
                     <input
                         type="text"
+                        name="nombre"
                         value={datosUsuario.nombre}
                         readOnly ={!modoEdicion}
-                        onChange={(e) => {
-                            setDatos({
-                                nombre: e.target.value
-                            })
-                        }}
+                        onChange={handleChange}
                     />
                 </div>
 
@@ -200,13 +225,10 @@ export default function PerfilClienteForm(){
                     <label>Apellidos</label>
                     <input
                         type="text"
+                        name="apellidos"
                         value={datosUsuario.apellidos}
                         readOnly = {!modoEdicion}
-                        onChange={(e) => {
-                            setDatos({
-                                apellidos: e.target.value
-                            })
-                        }}
+                        onChange={handleChange}
                     />
                 </div>
 
@@ -215,13 +237,10 @@ export default function PerfilClienteForm(){
                     <label>Usuario</label>
                     <input
                         type="text"
+                        name="usuario"
                         value={datosUsuario.usuario}
                         readOnly = {!modoEdicion}
-                        onChange={(e) => {
-                            setDatos({
-                                usuario: e.target.value
-                            })
-                        }}
+                        onChange={handleChange}
                     />
                 </div>
 
@@ -230,13 +249,10 @@ export default function PerfilClienteForm(){
                     <label>Correo</label>
                     <input
                         type="email"
+                        name="correo"
                         value={datosUsuario.correo}
                         readOnly = {!modoEdicion}
-                        onChange={(e) => {
-                            setDatos({
-                                correo: e.target.value
-                            })
-                        }}
+                        onChange={handleChange}
                     />
                 </div>
 
@@ -245,13 +261,10 @@ export default function PerfilClienteForm(){
                     <label>Teléfono</label>
                     <input
                         type="tel"
+                        name="telefono"
                         value={datosUsuario.telefono}
                         readOnly = {!modoEdicion}
-                        onChange={(e) => {
-                            setDatos({
-                                telefono: e.target.value
-                            })
-                        }}
+                        onChange={handleChange}
                     />
                 </div>
 
@@ -260,14 +273,14 @@ export default function PerfilClienteForm(){
                     <label>Fecha de Nacimiento</label>
                     <input
                         type="date"
+                        name="fecha"
                         value={datosUsuario.fecha}
                         readOnly
                     />
                 </div>
 
                 <div className="perfil-actions">
-                    <button type="submit"
-                    onSubmit={handleSumbit}>
+                    <button type="submit">
                         Guardar Cambios
                     </button>
 

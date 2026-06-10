@@ -3,15 +3,15 @@ import { jwtDecode } from "jwt-decode";
 const TOKEN_KEY = "jwt";
 
 export const guardarToken = (token) => {
-    localStorage.setItem(TOKEN_KEY, token);
+    localStorage.setItem(TOKEN_KEY, token)
 };
 
 export const obtenerToken = () => {
-    return localStorage.getItem(TOKEN_KEY);
+    return localStorage.getItem(TOKEN_KEY)
 };
 
 export const eliminarToken = () => {
-    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(TOKEN_KEY)
 };
 
 export const estaAutenticado = () => {

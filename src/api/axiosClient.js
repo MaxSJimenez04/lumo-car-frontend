@@ -15,4 +15,14 @@ api.interceptors.request.use((config) =>{
     return config
 })
 
+api.interceptors.response.use((response) => {
+    const newToken = response.data?.token
+
+    if (newToken) {
+        localStorage.setItem("jwt", newToken)
+    }
+
+    return response
+})
+
 export default api
