@@ -28,7 +28,6 @@ export const obtenerDatosToken = () => {
     try {
 
         const decoded = jwtDecode(token);
-        
         return {
             username:
                 decoded.unique_name ||

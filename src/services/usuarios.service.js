@@ -28,17 +28,21 @@ export const consultarFoto = async function(usuario) {
 }
 
 export const asociarFoto = async function(usuario, idArchivo) {
-    const respuesta = await api.post(API_BASE_URL + "/" +  usuario + "/pfp/", idArchivo)
+    const respuesta = await api.post(API_BASE_URL + "/" +  usuario + "/pfp/", {idArchivo})
     return respuesta.data
 }
 
-export const consultarUsuarios = async function() {
-    const  respuesta = await api.get(API_BASE_URL + "/")
-    return respuesta.data
+export const consultarEmpleados = async function(idSucursal = null) {
+
+    const respuesta = await api.get(API_BASE_URL + "/", {
+        params: idSucursal ? { idSucursal } : {}
+    });
+
+    return respuesta.data;
 }
 
-export const eliminar = async function(idUsuario) {
-    const respuesta = await api.delete(API_BASE_URL + "/")
+export const eliminar = async function(id) {
+    const respuesta = await api.delete(API_BASE_URL + "/" + id)
     return respuesta.data
 }
 
@@ -48,6 +52,6 @@ export const asociarSucursal = async function(usuario, idSucursal) {
 }
 
 export const cambiarSucursal = async function(usuario, idSucursal) {
-    const respuesta = await api.put(API_BASE_URL + "/" + usuario + "/admin-sucursal", idSucursal)
+    const respuesta = await api.put(API_BASE_URL + "/" + usuario + "/admin-sucursal", {idSucursal})
     return respuesta.data
 }
