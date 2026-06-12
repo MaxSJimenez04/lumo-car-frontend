@@ -12,7 +12,6 @@ export default function PerfilForm(){
         usuario: "",
         fecha:"",
     })
-    const [idFoto, setIdFoto] = useState(null)
     const [imagenPerfil, setFoto] = useState(null);
     const [archivoFoto, setArchivoFoto] = useState(null);
     const [modoEdicion, setModoEdicion] = useState(false);
@@ -100,7 +99,7 @@ export default function PerfilForm(){
                 const respuestaFoto = await subirFotoPerfil(formData)
 
                 // suponiendo que regresa id o url
-                setIdFoto(respuestaFoto.detalles.id)
+                const idFoto = respuestaFoto.detalles.id;
 
                 const usuarioActualizado = {
                     nombre: datosUsuario.nombre,
@@ -110,10 +109,11 @@ export default function PerfilForm(){
                     usuario: datosUsuario.usuario,
                     fecha: datosUsuario.fecha, // puede ser null si no cambió imagen 
                 }
-            }
-            if (idFoto) {
+
                 await asociarFoto(datosUsuario.usuario, idFoto);
             }
+            
+           
 
             const respuestaUsuario = await actualizar(datosUsuario, datosUsuario.usuario)
 
