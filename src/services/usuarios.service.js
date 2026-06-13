@@ -46,11 +46,6 @@ export const eliminar = async function(id) {
     return respuesta.data
 }
 
-export const asociarSucursal = async function(usuario, idSucursal) {
-    const respuesta = await api.post(API_BASE_URL + "/" + usuario + "/admin-sucursal", idSucursal)
-    return respuesta.data
-}
-
 export const cambiarSucursal = async function(usuario, idSucursal) {
     const respuesta = await api.put(API_BASE_URL + "/" + usuario + "/admin-sucursal", {idSucursal})
     return respuesta.data

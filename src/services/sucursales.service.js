@@ -8,6 +8,11 @@ export const registro = async function(datosSucursal) {
     return respuesta.data
 }
 
+export const consultaGeneralSucursales = async function() {
+    const respuesta = await api.get(API_BASE_URL + "/general")
+    return respuesta.data
+}
+
 export const consultarSucursales = async function(idCiudad) {
     const respuesta = await api.get(API_BASE_URL + "/", {params:{idCiudad: idCiudad}})
     return respuesta.data
