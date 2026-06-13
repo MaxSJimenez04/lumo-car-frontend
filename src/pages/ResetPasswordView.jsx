@@ -1,61 +1,90 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import "../utils/style.css"
-import { obtenerUsuario } from "../utils/auth"
-import InfoCard from "../components/resetpassword/InfoCard"
 import GlassCard from "../components/login/GlassCard"
+import CodeInput from "../components/resetpassword/CodeInput"
+import NewPasswordForm from "../components/resetpassword/NewPasswordForm"
 import { resetPassword } from "../services/auth.service"
 
-export default function ResetPasswordView(){
+const PASO_USUARIO = "usuario"
+const PASO_CODIGO = "codigo"
+const PASO_CONTRASENA = "contrasena"
+
+export default function ResetPasswordView() {
+    const [paso, setPaso] = useState(PASO_USUARIO)
     const [usuario, setUsuario] = useState("")
     const [error, setError] = useState("")
-    const handleSubmit = async(e) => {
-        e.preventDefault()
+    const [cargando, setCargando] = useState(false)
 
+    const titulos = {
+        [PASO_USUARIO]: "Recuperar contraseña",
+        [PASO_CODIGO]: "Verificar identidad",
+        [PASO_CONTRASENA]: "Nueva contraseña",
+    }
+
+    const handleEnviarCodigo = async (e) => {
+        e.preventDefault()
+        if (!usuario.trim()) {
+            setError("Ingresa tu nombre de usuario")
+            return
+        }
+        setCargando(true)
+        setError("")
         try {
-            console.log(usuario);
-            
-            const response = await resetPassword(usuario)
-            console.log("CORREO ENVIADO");
-            
+            await resetPassword(usuario)
+            setPaso(PASO_CODIGO)
         } catch (err) {
-            console.log(err);
-            setError(err.response?.data?.mensaje || "Hubo un error al enviar el correo")
+            setError(err.response?.data?.mensaje || "No se encontró el usuario o no tiene correo asociado")
+        } finally {
+            setCargando(false)
         }
     }
-    return(
+
+    return (
         <>
             <div className="background-overlay"></div>
 
             <div className="main-wrapper">
-                <GlassCard 
-                    title={"Recuperar Contraseña"}
-                    >
-                    <div className="input-container">
+                <GlassCard title={titulos[paso]}>
 
-                        <input
-                            type="text"
-                            className="floating-input"
-                            placeholder=" "
-                            value={usuario} //La variable que se usa para obtener el valor del campo de texto
-                            onChange={(e) => //Se parece a un txtCampo.value del JS normal
-                                setUsuario(
-                                    e.target.value
-                                )
-                            }
-                            required
+                    {paso === PASO_USUARIO && (
+                        <>
+                            <div className="input-container">
+                                <input
+                                    type="text"
+                                    className="floating-input"
+                                    placeholder=" "
+                                    value={usuario}
+                                    onChange={(e) => setUsuario(e.target.value)}
+                                    required
+                                />
+                                <label className="floating-label">
+                                    Ingresa tu usuario
+                                </label>
+                            </div>
+
+                            {error && <p className="form-error">{error}</p>}
+
+                            <button
+                                className="login-btn"
+                                onClick={handleEnviarCodigo}
+                                disabled={cargando}
+                            >
+                                {cargando ? "Enviando..." : "Enviar código de recuperación"}
+                            </button>
+                        </>
+                    )}
+
+                    {paso === PASO_CODIGO && (
+                        <CodeInput
+                            usuario={usuario}
+                            onSuccess={() => setPaso(PASO_CONTRASENA)}
                         />
+                    )}
 
-                        <label className="floating-label">
-                            Ingresa tu usuario
-                        </label>
-                    </div>
+                    {paso === PASO_CONTRASENA && (
+                        <NewPasswordForm usuario={usuario} />
+                    )}
 
-                    <button
-                        type="submit"
-                        className="login-btn"
-                        >
-                    Enviar código de recuperación
-                    </button>
                 </GlassCard>
             </div>
         </>
