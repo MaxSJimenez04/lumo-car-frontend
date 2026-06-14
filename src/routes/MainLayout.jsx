@@ -26,6 +26,10 @@ function MainLayout() {
             setUsuario(respuesta.username)
         }
         
+        document.body.classList.add("dashboard-body");
+        return () => {
+            document.body.classList.remove("dashboard-body");
+        };
     },[])
 
     useEffect(() => {

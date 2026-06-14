@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { consultarFoto } from "../../services/usuarios.service";
 
-export default function UserMenu({ usuario, onLogout }) {
+export default function UserMenu({ usuario, nombre, onLogout }) {
 
-    const [open, setOpen] = useState(false);
     const [imagenPerfil, setFoto] = useState(null)
 
     useEffect(() => {
@@ -28,31 +27,34 @@ export default function UserMenu({ usuario, onLogout }) {
     }, [usuario]);
 
     return (
-        <div className="user-menu">
-            <div className="profile-photo-wrapper">
+        <div className="header-user-menu">
+            <span className="header-username">Hola, {nombre || usuario}</span>
+            <div className="header-avatar-wrapper">
                 <img
-                src={imagenPerfil}
-                alt="Perfil"
-                className="perfil-image"
-                onClick={() => setOpen(!open)}
+                    src={imagenPerfil || "https://via.placeholder.com/150"}
+                    alt="Perfil"
+                    className="header-avatar"
                 />
             </div>
-            
+            <span className="dropdown-arrow">▼</span>
 
-            {open && (
-                <div className="dropdown">
+            <div className="header-dropdown-menu">
+                <Link to="/perfil">
+                    Mi cuenta
+                </Link>
 
-                    <Link to="/perfil">
-                        Mi Perfil
-                    </Link>
+                <Link to="/">
+                    Historial
+                </Link>
 
-                    <button onClick={onLogout}>
-                        Cerrar Sesión
-                    </button>
+                <Link to="/">
+                    Suscripciones
+                </Link>
 
-                </div>
-            )}
-
+                <button onClick={onLogout}>
+                    Cerrar Sesión
+                </button>
+            </div>
         </div>
     );
 }
