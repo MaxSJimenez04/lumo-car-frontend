@@ -6,18 +6,18 @@ export default function Header({rol, nombre, usuario, logout}){
         Cliente: [
             {texto: "Inicio", ruta: "/dashboard"},
             {texto: "Mis viajes", ruta: "/"},
-            {texto: "Vehículos", ruta: "/"}
+            {texto: "Vehículos", ruta: "/vehiculos"}
         ],
 
         Administrador: [
             {texto: "Inicio", ruta:"/dashboard"},
-            {texto: "Vehículos", ruta: "/"},
+            {texto: "Vehículos", ruta: "/vehiculos"},
         ],
 
         S_Administrador:[
             {texto: "Inicio", ruta: "/dashboard"},
             {texto: "Estadisticas", ruta: "/"},
-            {texto: "Vehículos", ruta: "/"},
+            {texto: "Vehículos", ruta: "/vehiculos"},
             {texto: "Empleados", ruta: "/empleados"}
         ]
     }
