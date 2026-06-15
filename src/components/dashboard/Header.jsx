@@ -8,6 +8,7 @@ export default function Header({rol, nombre, usuario, logout}){
         Cliente: [
             {texto: "Inicio", ruta: "/dashboard"},
             {texto: "Vehículos", ruta: "/vehiculos"},
+            {texto: "Sucursales", ruta: "/sucursales"},
             {texto: "Historial", ruta: "/"}
         ],
 

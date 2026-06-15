@@ -8,6 +8,7 @@ import MainLayout from "../routes/MainLayout"
 import EmpleadosView from "../pages/EmpleadosView"
 import CrearCuentaEmpleadoView from "../pages/CrearCuentaEmpleadoView"
 import VehiculosView from "../pages/VehiculosView"
+import SucursalesView from "../pages/SucursalesView"
 
 function AppRoutes() {
     return (
@@ -24,6 +25,7 @@ function AppRoutes() {
                 <Route path="/empleados" element={<EmpleadosView/>}/>
                 <Route path="/empleados/nuevo" element={<CrearCuentaEmpleadoView/>}/>
                 <Route path="/vehiculos" element={<VehiculosView/>}/>
+                <Route path="/sucursales" element={<SucursalesView/>}/>
             </Route>
 
         </Routes>
