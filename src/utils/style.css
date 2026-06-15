@@ -110,6 +110,43 @@ body.dashboard-body:has(.dashboard-container) {
     margin-bottom: 25px;
 }
 
+.input-hint {
+    display: block;
+    font-size: 0.75rem;
+    color: #aaa;
+    margin-top: 4px;
+}
+
+.input-hint.error {
+    color: #ff4d4d;
+}
+
+.form-error {
+    color: #ff4d4d;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.password-requisitos {
+    list-style: none;
+    padding: 6px 0 0 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.password-requisitos li {
+    font-size: 0.75rem;
+    color: #ff4d4d;
+    transition: color 0.2s;
+}
+
+.password-requisitos li.cumplido {
+    color: #4ade80;
+}
+
 .floating-input {
     width: 100%;
     max-width: 520px;
@@ -149,6 +186,10 @@ body.dashboard-body:has(.dashboard-container) {
     /* We use a solid dark color so the line of the border doesn't cross the text */
     background: #113c24;
     border-radius: 4px;
+}
+
+.input-password-wrapper {
+    position: relative;
 }
 
 .toggle-password {
