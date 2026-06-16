@@ -3,9 +3,9 @@ import { consultarVehiculo } from "../../services/vehiculos.service"
 import { consultarFotosSecundarias } from "../../services/vehiculos.service"
 
 const COMBUSTIBLE_LABEL = {
-    0: { label: "Gasolina",  icon: "⛽" },
-    1: { label: "Híbrido",   icon: "🔋" },
-    2: { label: "Eléctrico", icon: "⚡" },
+    1: { label: "Gasolina",  icon: "⛽" },
+    2: { label: "Híbrido",   icon: "🔋" },
+    0: { label: "Eléctrico", icon: "⚡" },
 }
 
 const TAMANO_LABEL = {
@@ -63,36 +63,36 @@ export default function ModalVehiculo({ vehiculo, modoCliente = false, onCerrar,
     const fotoPrincipal = `${import.meta.env.VITE_URL_API}/vehiculos/${vehiculo.id}/main-picture`
 
     return (
-        <div style={styles.overlay} onClick={(e) => e.target === e.currentTarget && onCerrar()}>
-            <div style={styles.modal}>
+        <div className="mv-overlay" onClick={(e) => e.target === e.currentTarget && onCerrar()}>
+            <div className="mv-modal">
                 {/* Header */}
-                <div style={styles.header}>
+                <div className="mv-header">
                     <div>
-                        <p style={styles.headerMarca}>{detalle?.nombreMarca ?? vehiculo.nombreMarca}</p>
-                        <h2 style={styles.headerModelo}>{detalle?.modelo ?? vehiculo.modelo}</h2>
+                        <p className="mv-headerMarca">{detalle?.nombreMarca ?? vehiculo.nombreMarca}</p>
+                        <h2 className="mv-headerModelo">{detalle?.modelo ?? vehiculo.modelo}</h2>
                     </div>
-                    <button style={styles.closeBtn} onClick={onCerrar}>✕</button>
+                    <button className="mv-btn-cerrar" onClick={onCerrar}>✕</button>
                 </div>
 
                 {cargando ? (
-                    <div style={styles.loading}>Cargando información…</div>
+                    <div className="mv-loading">Cargando información…</div>
                 ) : (
-                    <div style={styles.content}>
+                    <div className="mv-content">
                         {/* Galería */}
-                        <div style={styles.gallery}>
+                        <div  className="mv-gallery">
                             <img
                                 src={fotoActiva ?? fotoPrincipal}
                                 alt="Foto del vehículo"
-                                style={styles.fotoMain}
+                                className="mv-fotoMain"
                             />
                             {fotosSecundarias.length > 0 && (
-                                <div style={styles.thumbnails}>
+                                <div className="mv-thumbnails">
                                     <img
                                         src={fotoPrincipal}
                                         alt="Principal"
-                                        style={{
-                                            ...styles.thumb,
-                                            ...(fotoActiva === null ? styles.thumbActiva : {}),
+                                        className={{
+                                            ..."mv-thumb",
+                                            ...(fotoActiva === url ? "mv-thumbActiva" : {}),
                                         }}
                                         onClick={() => setFotoActiva(null)}
                                     />
@@ -101,9 +101,9 @@ export default function ModalVehiculo({ vehiculo, modoCliente = false, onCerrar,
                                             key={i}
                                             src={url}
                                             alt={`Foto ${i + 1}`}
-                                            style={{
-                                                ...styles.thumb,
-                                                ...(fotoActiva === url ? styles.thumbActiva : {}),
+                                            className={{
+                                                ..."mv-thumb",
+                                                ...(fotoActiva === url ? "mv-thumbActiva" : {}),
                                             }}
                                             onClick={() => setFotoActiva(url)}
                                             onError={(e) => { e.target.style.display = "none" }}
@@ -114,8 +114,8 @@ export default function ModalVehiculo({ vehiculo, modoCliente = false, onCerrar,
                         </div>
 
                         {/* Datos del vehículo */}
-                        <div style={styles.info}>
-                            <div style={styles.infoGrid}>
+                        <div className="mv-info">
+                            <div className="mv-infoGrid">
                                 <Dato etiqueta="Placa"        valor={detalle?.placa} />
                                 <Dato etiqueta="Marca"        valor={detalle?.nombreMarca} />
                                 <Dato etiqueta="Modelo"       valor={detalle?.modelo} />
