@@ -735,6 +735,68 @@ body.dashboard-body:has(.dashboard-container) {
     font-size: 0.95rem;
 }
 
+.vehiculos-sucursal-panel {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.vehiculos-sucursal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.vehiculos-sucursal-titulo {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+.vehiculos-sucursal-dir {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin: 4px 0 0;
+}
+
+.vehiculos-sucursal-cerrar {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: #6b7280;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background 0.15s;
+}
+
+.vehiculos-sucursal-cerrar:hover {
+    background: #f3f4f6;
+    color: #111827;
+}
+
+.vehiculos-sucursal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.vehiculos-sucursal-msg {
+    color: #6b7280;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.vehiculos-sucursal-msg.error {
+    color: #ef4444;
+}
+
 .dashboard-left-card {
     width: 320px;
     border-radius: 20px;

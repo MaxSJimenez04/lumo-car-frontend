@@ -7,8 +7,8 @@ export default function Header({rol, nombre, usuario, logout}){
     const menus = {
         Cliente: [
             {texto: "Inicio", ruta: "/dashboard"},
-            {texto: "Vehículos", ruta: "/vehiculos"},
             {texto: "Sucursales", ruta: "/sucursales"},
+            {texto: "Vehículos", ruta: "/vehiculos"},
             {texto: "Historial", ruta: "/"}
         ],
 
@@ -49,7 +49,7 @@ export default function Header({rol, nombre, usuario, logout}){
 
             <div className="header-right">
                 <div className="noti-indicator">
-                    🔔 Noti
+                    🔔 Notificaciones
                 </div>
                 <UserMenu
                     usuario={usuario}

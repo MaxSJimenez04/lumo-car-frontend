@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet"
+import { MapContainer, TileLayer, Marker, Tooltip } from "react-leaflet"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
 
@@ -13,7 +13,7 @@ const pinRojo = L.divIcon({
     popupAnchor: [0, -36],
 })
 
-export default function MapaSucursales({ sucursales, onSeleccionar, seleccionada }) {
+export default function MapaSucursales({ sucursales, onSeleccionar, seleccionada, onClickSucursal }) {
     const centro = sucursales.length > 0
         ? [sucursales[0].latitud, sucursales[0].longitud]
         : [23.6345, -102.5528]
@@ -31,15 +31,19 @@ export default function MapaSucursales({ sucursales, onSeleccionar, seleccionada
 
             {sucursales.map((s) => (
                 <Marker
-                    key={s.idSucursal}
+                    key={s.id}
                     position={[s.latitud, s.longitud]}
                     icon={pinRojo}
-                    eventHandlers={{ click: () => onSeleccionar(s) }}
+                    eventHandlers={{
+                        mouseover: () => onSeleccionar(s),
+                        mouseout: () => onSeleccionar(null),
+                        click: () => onClickSucursal(s),
+                    }}
                 >
-                    <Popup>
+                    <Tooltip direction="top" offset={[0, -36]} opacity={1}>
                         <strong>{s.nombre}</strong><br />
                         {s.direccion}
-                    </Popup>
+                    </Tooltip>
                 </Marker>
             ))}
         </MapContainer>

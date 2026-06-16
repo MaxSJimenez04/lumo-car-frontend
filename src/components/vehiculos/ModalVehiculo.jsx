@@ -18,11 +18,13 @@ const TAMANO_LABEL = {
     S: "Deportivo",
 }
 
-export default function ModalVehiculo({ vehiculo, modoCliente = false, onCerrar }) {
+export default function ModalVehiculo({ vehiculo, modoCliente = false, onCerrar, onReservar }) {
     const [detalle, setDetalle]           = useState(null)
     const [fotosSecundarias, setFotos]    = useState([])
     const [fotoActiva, setFotoActiva]     = useState(null)
     const [cargando, setCargando]         = useState(true)
+    const [fechaInicio, setFechaInicio]   = useState("")
+    const [fechaFin, setFechaFin]         = useState("")
 
     useEffect(() => {
         if (!vehiculo) return
@@ -126,6 +128,17 @@ export default function ModalVehiculo({ vehiculo, modoCliente = false, onCerrar 
                                     valor={detalle?.aire_acondicionado ? "Sí" : "No"}
                                 />
                                 <Dato
+                                    etiqueta="Estado"
+                                    valor={
+                                        <span style={{
+                                            color: detalle?.estado === 1 ? "#16a34a" : "#dc2626",
+                                            fontWeight: 600,
+                                        }}>
+                                            {detalle?.estado === 1 ? "Disponible" : "No disponible"}
+                                        </span>
+                                    }
+                                />
+                                <Dato
                                     etiqueta="Color"
                                     valor={
                                         <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -143,25 +156,58 @@ export default function ModalVehiculo({ vehiculo, modoCliente = false, onCerrar 
                             </div>
 
                             {/* Footer del modal */}
-                            <div style={styles.footer}>
-                                {modoCliente ? (
-                                    <>
-                                        {/* TODO: navegar a la página de renta del vehículo (por definir) */}
+                            {onReservar ? (
+                                <div style={styles.footerReserva}>
+                                    <div style={styles.fechasGrid}>
+                                        <div style={styles.fechaGrupo}>
+                                            <label style={styles.fechaLabel}>Inicio</label>
+                                            <input
+                                                type="datetime-local"
+                                                style={styles.fechaInput}
+                                                value={fechaInicio}
+                                                onChange={(e) => setFechaInicio(e.target.value)}
+                                            />
+                                        </div>
+                                        <div style={styles.fechaGrupo}>
+                                            <label style={styles.fechaLabel}>Fin</label>
+                                            <input
+                                                type="datetime-local"
+                                                style={styles.fechaInput}
+                                                value={fechaFin}
+                                                min={fechaInicio}
+                                                onChange={(e) => setFechaFin(e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div style={styles.footer}>
+                                        <button style={styles.btnCerrar} onClick={onCerrar}>
+                                            Regresar
+                                        </button>
                                         <button
-                                            style={styles.btnRentar}
-                                            onClick={() => {
-                                                /* TODO: reemplazar con navigate('/rentar/' + vehiculo.id) o similar */
-                                                alert("Redirigir a página de renta — por definir")
+                                            style={{
+                                                ...styles.btnRentar,
+                                                opacity: (!fechaInicio || !fechaFin) ? 0.5 : 1,
+                                                cursor: (!fechaInicio || !fechaFin) ? "not-allowed" : "pointer",
                                             }}
+                                            disabled={!fechaInicio || !fechaFin}
+                                            onClick={() => onReservar({ vehiculo, fechaInicio, fechaFin })}
                                         >
+                                            Reservar
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div style={styles.footer}>
+                                    {modoCliente && (
+                                        <button style={styles.btnRentar} onClick={() => alert("Redirigir a página de renta")}>
                                             Rentar vehículo
                                         </button>
-                                    </>
-                                ) : null}
-                                <button style={styles.btnCerrar} onClick={onCerrar}>
-                                    Cerrar
-                                </button>
-                            </div>
+                                    )}
+                                    <button style={styles.btnCerrar} onClick={onCerrar}>
+                                        Cerrar
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 )}
@@ -293,5 +339,37 @@ const styles = {
         fontWeight: 600,
         fontSize: 14,
         cursor: "pointer",
+    },
+    footerReserva: {
+        borderTop: "1px solid #e5e7eb",
+        padding: "16px 24px 24px",
+        display: "flex",
+        flexDirection: "column",
+        gap: 12,
+    },
+    fechasGrid: {
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: 12,
+    },
+    fechaGrupo: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 4,
+    },
+    fechaLabel: {
+        fontSize: 11,
+        fontWeight: 600,
+        color: "#6b7280",
+        textTransform: "uppercase",
+        letterSpacing: 0.5,
+    },
+    fechaInput: {
+        padding: "8px 12px",
+        border: "1px solid #d1d5db",
+        borderRadius: 8,
+        fontSize: 14,
+        color: "#111827",
+        outline: "none",
     },
 }

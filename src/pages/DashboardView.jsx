@@ -32,7 +32,7 @@ export default function DashboardView(){
                     </p>
                 </div>
 
-                <Link to="/vehiculos" className="dashboard-reservar-link">
+                <Link to="/sucursales" className="dashboard-reservar-link">
                     <button className="dashboard-reservar-btn">
                         Reservar
                     </button>
