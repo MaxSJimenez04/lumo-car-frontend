@@ -8,7 +8,7 @@ export const subirFotoPerfil = async function(archivo) {
 }
  
 export const subirFotoVehiculo = async function(archivo) {
-    const respuesta = await api.post(API_BASE_URL + "/vehiculos/principal", archivo)
+    const respuesta = await api.post(API_BASE_URL + "/vehiculos", archivo)
     return respuesta.data
 }
  

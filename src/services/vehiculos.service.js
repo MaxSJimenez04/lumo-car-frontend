@@ -3,7 +3,7 @@ import api from "../api/axiosClient"
 const API_BASE_URL = "/vehiculos"
 
 export const consultarColor = async function(idColor) {
-    const respuesta = await api.get(API_BASE_URL + "/colores", { params: { idColor } })
+    const respuesta = await api.get(API_BASE_URL + "/color", { params: { idColor } })
     return respuesta.data
 }
 
