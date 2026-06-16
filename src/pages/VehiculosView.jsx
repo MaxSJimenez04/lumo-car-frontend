@@ -81,47 +81,53 @@ export default function VehiculosView() {
     if (loading) return <p>Cargando...</p>
 
     return (
-        <div className="filtros">
-            {!modoCliente && (
-                <button
-                    className="btn-nuevo-vehiculo"
-                    onClick={() => navigate("/vehiculos/nuevo")}
+        <div className="seccion">
+            <div className="seccion-filtros">
+                {!modoCliente && (
+                    <button
+                        className="btn"
+                        onClick={() => navigate("/vehiculos/nuevo")}
+                    >
+                        + Nuevo vehículo
+                    </button>
+                )}
+
+                <select
+                    className="campo"
+                    value={estado}
+                    onChange={(e) => setEstado(e.target.value)}
                 >
-                    + Nuevo vehículo
-                </button>
-            )}
+                    <option value="">Estado</option>
+                    {estados.map((e) => (
+                        <option key={e.id} value={e.id}>{e.nombreEstado}</option>
+                    ))}
+                </select>
 
-            <select
-                value={estado}
-                onChange={(e) => setEstado(e.target.value)}
-            >
-                <option value="">Estado</option>
-                {estados.map((e) => (
-                    <option key={e.id} value={e.id}>{e.nombreEstado}</option>
-                ))}
-            </select>
+                <select
+                    className="campo"
+                    value={ciudad}
+                    onChange={(e) => setCiudad(e.target.value)}
+                    disabled={!estado}
+                >
+                    <option value="">Ciudad</option>
+                    {ciudades.map((c) => (
+                        <option key={c.id} value={c.id}>{c.nombreCiudad}</option>
+                    ))}
+                </select>
 
-            <select
-                value={ciudad}
-                onChange={(e) => setCiudad(e.target.value)}
-                disabled={!estado}
-            >
-                <option value="">Ciudad</option>
-                {ciudades.map((c) => (
-                    <option key={c.id} value={c.id}>{c.nombreCiudad}</option>
-                ))}
-            </select>
-
-            <select
-                value={sucursal}
-                onChange={(e) => setSucursal(e.target.value)}
-                disabled={!ciudad}
-            >
-                <option value="">Todas las sucursales</option>
-                {sucursales.map((s) => (
-                    <option key={s.id} value={s.id}>{s.nombre}</option>
-                ))}
-            </select>
+                <select
+                    className="campo"
+                    value={sucursal}
+                    onChange={(e) => setSucursal(e.target.value)}
+                    disabled={!ciudad}
+                >
+                    <option value="">Todas las sucursales</option>
+                    {sucursales.map((s) => (
+                        <option key={s.id} value={s.id}>{s.nombre}</option>
+                    ))}
+                </select>
+            </div>
+            
 
             <GridVehiculos
                 idSucursal={sucursal}

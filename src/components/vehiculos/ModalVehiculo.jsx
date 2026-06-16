@@ -63,23 +63,23 @@ export default function ModalVehiculo({ vehiculo, modoCliente = false, onCerrar,
     const fotoPrincipal = `${import.meta.env.VITE_URL_API}/vehiculos/${vehiculo.id}/main-picture`
 
     return (
-        <div className="mv-overlay" onClick={(e) => e.target === e.currentTarget && onCerrar()}>
-            <div className="mv-modal">
+        <div style={styles.overlay} onClick={(e) => e.target === e.currentTarget && onCerrar()}>
+            <div style={styles.modal}>
                 {/* Header */}
-                <div className="mv-header">
+                <div style={styles.header}>
                     <div>
-                        <p className="mv-headerMarca">{detalle?.nombreMarca ?? vehiculo.nombreMarca}</p>
-                        <h2 className="mv-headerModelo">{detalle?.modelo ?? vehiculo.modelo}</h2>
+                        <p style={styles.headerMarca}>{detalle?.nombreMarca ?? vehiculo.nombreMarca}</p>
+                        <h2 style={styles.headerModelo}>{detalle?.modelo ?? vehiculo.modelo}</h2>
                     </div>
-                    <button className="mv-btn-cerrar" onClick={onCerrar}>✕</button>
+                    <button style={styles.btnCerrar} onClick={onCerrar}>✕</button>
                 </div>
 
                 {cargando ? (
-                    <div className="mv-loading">Cargando información…</div>
+                    <div style={styles.loading}>Cargando información…</div>
                 ) : (
-                    <div className="mv-content">
+                    <div style={styles.content}>
                         {/* Galería */}
-                        <div  className="mv-gallery">
+                        <div style={styles.gallery}>
                             <img
                                 src={fotoActiva ?? fotoPrincipal}
                                 alt="Foto del vehículo"
@@ -90,9 +90,9 @@ export default function ModalVehiculo({ vehiculo, modoCliente = false, onCerrar,
                                     <img
                                         src={fotoPrincipal}
                                         alt="Principal"
-                                        className={{
-                                            ..."mv-thumb",
-                                            ...(fotoActiva === url ? "mv-thumbActiva" : {}),
+                                        style={{
+                                            ...styles.thumb,
+                                            ...(fotoActiva === url ? styles.thumbActiva: {}),
                                         }}
                                         onClick={() => setFotoActiva(null)}
                                     />
@@ -101,9 +101,9 @@ export default function ModalVehiculo({ vehiculo, modoCliente = false, onCerrar,
                                             key={i}
                                             src={url}
                                             alt={`Foto ${i + 1}`}
-                                            className={{
-                                                ..."mv-thumb",
-                                                ...(fotoActiva === url ? "mv-thumbActiva" : {}),
+                                            style={{
+                                                ...styles.thumb,
+                                                ...(fotoActiva === url ? styles.thumbActiva: {}),
                                             }}
                                             onClick={() => setFotoActiva(url)}
                                             onError={(e) => { e.target.style.display = "none" }}
@@ -114,8 +114,8 @@ export default function ModalVehiculo({ vehiculo, modoCliente = false, onCerrar,
                         </div>
 
                         {/* Datos del vehículo */}
-                        <div className="mv-info">
-                            <div className="mv-infoGrid">
+                        <div style={styles.info}>
+                            <div style={styles.infoGrid}>
                                 <Dato etiqueta="Placa"        valor={detalle?.placa} />
                                 <Dato etiqueta="Marca"        valor={detalle?.nombreMarca} />
                                 <Dato etiqueta="Modelo"       valor={detalle?.modelo} />

@@ -41,7 +41,8 @@ export default function GridEmpleados({
     return (
         <>
             <div className="toolbar">
-                <button onClick={onNuevo}>
+                <button onClick={onNuevo}
+                className='btn'>
                     Nuevo
                 </button>
 

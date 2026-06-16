@@ -27,57 +27,40 @@ export default function ModalEmpleado({
     }
 
     return (
-        <div className="modal-backdrop">
-            <div className="modal">
+       <div className="modal-backdrop">
+            {/* Usamos 'glass-card' que es el estilo aplicado en tus otros modales */}
+            <div className="glass-card" style={{ width: '100%', maxWidth: '450px', padding: '24px' }}>
+                <h2 style={{ marginBottom: '20px' }}>Perfil del empleado</h2>
 
-                <h2>Perfil del empleado</h2>
-
-                <div>
+                <div className="input-container">
                     <label>Usuario</label>
-                    <input
-                        value={empleado.usuario}
-                        disabled
-                    />
+                    <input className="floating-input" value={empleado.usuario} disabled />
                 </div>
 
-                <div>
+                <div className="input-container">
                     <label>Nombre</label>
-                    <input
-                        value={empleado.nombre}
-                        disabled
-                    />
+                    <input className="floating-input" value={empleado.nombre} disabled />
                 </div>
 
-                <div>
+                <div className="input-container">
                     <label>Sucursal</label>
-
-                    <select
+                    <select 
+                        className="floating-input"
                         value={idsucursal}
-                        onChange={(e) =>
-                            setIdSucursal(e.target.value)
-                        }
+                        onChange={(e) => setIdSucursal(e.target.value)}
                     >
                         {sucursales.map(sucursal => (
-                            <option
-                                key={sucursal.id}
-                                value={sucursal.id}
-                            >
+                            <option key={sucursal.id} value={sucursal.id}>
                                 {sucursal.nombre}
                             </option>
                         ))}
                     </select>
                 </div>
 
-                <div className="acciones">
-                    <button onClick={guardar}>
-                        Guardar
-                    </button>
-
-                    <button onClick={onClose}>
-                        Cerrar
-                    </button>
+                <div className="acciones" style={{ marginTop: '20px', gap: '10px' }}>
+                    <button className="login-btn" onClick={guardar}>Guardar</button>
+                    <button className="rv-btn rv-btn-eliminar" onClick={onClose}>Cerrar</button>
                 </div>
-
             </div>
         </div>
     )
