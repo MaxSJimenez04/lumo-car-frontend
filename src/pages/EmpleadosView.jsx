@@ -122,55 +122,60 @@ export default function EmpleadosView() {
     }
 
     return (
-       <div className="filtros">
+       <div className="seccion">
+            <div className="seccion-filtros">
+                <select
+                    className="campo"
+                    value={estado}
+                    onChange={(e) => setEstado(e.target.value)}
+                >
+                    <option value="">Estado</option>
 
-            <select
-                value={estado}
-                onChange={(e) => setEstado(e.target.value)}
-            >
-                <option value="">Estado</option>
+                    {estados.map(estado => (
+                        <option
+                            key={estado.id}
+                            value={estado.id}
+                        >
+                            {estado.nombreEstado}
+                        </option>
+                    ))}
+                </select>
 
-                {estados.map(estado => (
-                    <option
-                        key={estado.id}
-                        value={estado.id}
-                    >
-                        {estado.nombreEstado}
-                    </option>
-                ))}
-            </select>
+                <select
+                    className="campo"
+                    value={ciudad}
+                    onChange={(e) => setCiudad(e.target.value)}
+                >
+                    <option value="">Ciudad</option>
 
-            <select
-                value={ciudad}
-                onChange={(e) => setCiudad(e.target.value)}
-            >
-                <option value="">Ciudad</option>
+                    {ciudades.map(ciudad => (
+                        <option
+                            key={ciudad.id}
+                            value={ciudad.id}
+                        >
+                            {ciudad.nombreCiudad}
+                        </option>
+                    ))}
+                </select>
 
-                {ciudades.map(ciudad => (
-                    <option
-                        key={ciudad.id}
-                        value={ciudad.id}
-                    >
-                        {ciudad.nombreCiudad}
-                    </option>
-                ))}
-            </select>
+                <select
+                    className="campo"
+                    value={sucursal}
+                    onChange={(e) => setSucursal(e.target.value)}
+                >
+                    <option value="">Todas las sucursales</option>
 
-            <select
-                value={sucursal}
-                onChange={(e) => setSucursal(e.target.value)}
-            >
-                <option value="">Todas las sucursales</option>
-
-                {sucursales.map(sucursal => (
-                    <option
-                        key={sucursal.id}
-                        value={sucursal.id}
-                    >
-                        {sucursal.nombre}
-                    </option>
-                ))}
-            </select>
+                    {sucursales.map(sucursal => (
+                        <option
+                            key={sucursal.id}
+                            value={sucursal.id}
+                        >
+                            {sucursal.nombre}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            
 
             <GridEmpleados
                 idsucursal={sucursal}

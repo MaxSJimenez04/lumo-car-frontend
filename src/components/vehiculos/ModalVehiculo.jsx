@@ -3,9 +3,9 @@ import { consultarVehiculo } from "../../services/vehiculos.service"
 import { consultarFotosSecundarias } from "../../services/vehiculos.service"
 
 const COMBUSTIBLE_LABEL = {
-    0: { label: "Gasolina",  icon: "⛽" },
-    1: { label: "Híbrido",   icon: "🔋" },
-    2: { label: "Eléctrico", icon: "⚡" },
+    1: { label: "Gasolina",  icon: "⛽" },
+    2: { label: "Híbrido",   icon: "🔋" },
+    0: { label: "Eléctrico", icon: "⚡" },
 }
 
 const TAMANO_LABEL = {
@@ -71,7 +71,7 @@ export default function ModalVehiculo({ vehiculo, modoCliente = false, onCerrar,
                         <p style={styles.headerMarca}>{detalle?.nombreMarca ?? vehiculo.nombreMarca}</p>
                         <h2 style={styles.headerModelo}>{detalle?.modelo ?? vehiculo.modelo}</h2>
                     </div>
-                    <button style={styles.closeBtn} onClick={onCerrar}>✕</button>
+                    <button style={styles.btnCerrar} onClick={onCerrar}>✕</button>
                 </div>
 
                 {cargando ? (
@@ -83,16 +83,16 @@ export default function ModalVehiculo({ vehiculo, modoCliente = false, onCerrar,
                             <img
                                 src={fotoActiva ?? fotoPrincipal}
                                 alt="Foto del vehículo"
-                                style={styles.fotoMain}
+                                className="mv-fotoMain"
                             />
                             {fotosSecundarias.length > 0 && (
-                                <div style={styles.thumbnails}>
+                                <div className="mv-thumbnails">
                                     <img
                                         src={fotoPrincipal}
                                         alt="Principal"
                                         style={{
                                             ...styles.thumb,
-                                            ...(fotoActiva === null ? styles.thumbActiva : {}),
+                                            ...(fotoActiva === url ? styles.thumbActiva: {}),
                                         }}
                                         onClick={() => setFotoActiva(null)}
                                     />
@@ -103,7 +103,7 @@ export default function ModalVehiculo({ vehiculo, modoCliente = false, onCerrar,
                                             alt={`Foto ${i + 1}`}
                                             style={{
                                                 ...styles.thumb,
-                                                ...(fotoActiva === url ? styles.thumbActiva : {}),
+                                                ...(fotoActiva === url ? styles.thumbActiva: {}),
                                             }}
                                             onClick={() => setFotoActiva(url)}
                                             onError={(e) => { e.target.style.display = "none" }}

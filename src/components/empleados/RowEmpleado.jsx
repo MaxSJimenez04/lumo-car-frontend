@@ -4,25 +4,27 @@ export default function RowEmpleado({
     onEliminar
 }) {
     return (
-        <tr>
-            <td>{empleado.usuario}</td>
+        <tr className="rv-row">
+            <td className="rv-td">{empleado.usuario}</td>
 
-            <td>
+            <td className="rv-td">
                 {empleado.nombre}
             </td>
 
-            <td>
+            <td className="rv-td">
                 {empleado.sucursal}
             </td>
 
-            <td>
+            <td className="rv-td">
                 <button
+                    className="rv-btn rv-btn-editar"
                     onClick={() => onConsultar(empleado)}
                 >
                     Consultar
                 </button>
 
-                <button
+                <button 
+                    className="rv-btn rv-btn-editar"
                     onClick={() => onEliminar(empleado.id)}
                 >
                     Eliminar

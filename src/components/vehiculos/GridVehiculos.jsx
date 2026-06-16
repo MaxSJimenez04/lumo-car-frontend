@@ -86,7 +86,7 @@ export default function GridVehiculos({
                     <table style={styles.table}>
                         <thead>
                             <tr>
-                                {["Placa", "Modelo", "Marca", "Acciones"].map((h) => (
+                                {["Foto","Placa", "Modelo", "Marca","Tamaño","Pasajeros","Combustible", "Acciones"].map((h) => (
                                     <th key={h} style={styles.th}>{h}</th>
                                 ))}
                             </tr>
