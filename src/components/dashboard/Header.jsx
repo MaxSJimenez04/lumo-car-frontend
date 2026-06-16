@@ -1,7 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import UserMenu from "./UserMenu";
+import NotificacionesPanel from "./NotificacionesPanel";
 
-export default function Header({rol, nombre, usuario, logout}){
+export default function Header({rol, nombre, usuario, idUsuario, logout}){
     const location = useLocation();
     
     const menus = {
@@ -48,9 +49,7 @@ export default function Header({rol, nombre, usuario, logout}){
             </nav>
 
             <div className="header-right">
-                <div className="noti-indicator">
-                    🔔 Notificaciones
-                </div>
+                <NotificacionesPanel idUsuario={idUsuario} />
                 <UserMenu
                     usuario={usuario}
                     nombre={nombre}
