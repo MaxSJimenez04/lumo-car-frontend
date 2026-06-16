@@ -5,6 +5,8 @@ import {
     consultarColores,
     consultarFotoPrincipal,
     consultarFotosSecundarias,
+    asociarFotoPrincipal,
+    asociarFotoSecundaria,
 } from '../../services/vehiculos.service'
 import { subirFotoVehiculo } from '../../services/archivos.service'
 import api from '../../api/axiosClient'
@@ -110,30 +112,12 @@ export default function EditarVehiculoForm({ idVehiculo, onGuardado, onCancelar 
 
                 // Fotos secundarias
                 try {
-                    if (idVehiculo) {
-                        try {
-                            const respSecundarias = await consultarFotos(idVehiculo)
-                            if (Array.isArray(respSecundarias)) {
-                                setFotosSecundarias(
-                                    respSecundarias.map(f => ({
-                                        id: f.id,
-                                        nombreArchivo: f.nombreArchivo,
-                                        objectURL: `${baseURL}/uploads/vehiculos/${f.nombreArchivo}`,
-                                    }))
-                                )
-                            }
-                        } catch {
-                            setFotosSecundarias([])
-                        }
-                    }
-                    // consultarFotos puede devolver un array de objetos { id, nombreArchivo }
-                    // o un blob multipart; aquí asumimos que el servicio los normaliza a array
+                    const respSecundarias = await consultarFotosSecundarias(idVehiculo)
                     if (Array.isArray(respSecundarias)) {
                         setFotosSecundarias(
                             respSecundarias.map(f => ({
                                 id: f.id,
                                 nombreArchivo: f.nombreArchivo,
-                                // URL de previsualización usando el endpoint de la foto secundaria
                                 objectURL: `${baseURL}/uploads/vehiculos/${f.nombreArchivo}`,
                             }))
                         )
@@ -205,6 +189,10 @@ export default function EditarVehiculoForm({ idVehiculo, onGuardado, onCancelar 
         setExito(false)
         setGuardando(true)
 
+        // Capturar estado en variables locales para evitar el problema de closure con React
+        const secundariasASubir = [...nuevasSecundarias]
+        const secundariasAEliminar = [...idsAEliminar]
+
         try {
             // 1. Actualizar datos del vehículo
             const payload = {
@@ -220,24 +208,20 @@ export default function EditarVehiculoForm({ idVehiculo, onGuardado, onCancelar 
                 const fd = new FormData()
                 fd.append('file', nuevaFotoPrincipal)
                 const archivoResp = await subirFotoVehiculo(fd)
-                await api.put(`/vehiculos/${idVehiculo}/foto-principal`, {
-                    idArchivo: archivoResp.detalles.id,
-                })
+                const asociacionResp = await asociarFotoPrincipal(idVehiculo, archivoResp.detalles?.id)
             }
 
             // 3. Eliminar fotos secundarias marcadas
-            for (const idArchivo of idsAEliminar) {
+            for (const idArchivo of secundariasAEliminar) {
                 await api.delete(`/archivos/${idArchivo}`)
             }
 
             // 4. Subir y asociar nuevas fotos secundarias
-            for (const foto of nuevasSecundarias) {
+            for (const foto of secundariasASubir) {
                 const fd = new FormData()
                 fd.append('file', foto)
                 const archivoResp = await subirFotoVehiculo(fd)
-                await api.put(`/vehiculos/${idVehiculo}/fotos-secundarias`, {
-                    idArchivo: archivoResp.detalles.id,
-                })
+                const asociacionResp = await asociarFotoSecundaria(idVehiculo, archivoResp.detalles?.id)
             }
 
             setExito(true)
@@ -248,13 +232,14 @@ export default function EditarVehiculoForm({ idVehiculo, onGuardado, onCancelar 
             setIdsAEliminar([])
 
             // Refrescar URL de foto principal para forzar recarga
-            setUrlFotoPrincipal(prev => prev + `?t=${Date.now()}`)
+            setUrlFotoPrincipal(`${import.meta.env.VITE_URL_API || ''}/vehiculos/${idVehiculo}/main-picture?t=${Date.now()}`)
 
             if (onGuardado) onGuardado({ id: idVehiculo, ...payload })
         } catch (err) {
             setError(
                 err?.response?.data?.mensaje ||
                 err?.response?.data?.errores?.[0]?.msg ||
+                err?.message ||
                 'Ocurrió un error al actualizar el vehículo.'
             )
         } finally {

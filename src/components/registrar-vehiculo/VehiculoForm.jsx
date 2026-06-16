@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { registrarVehiculo, registrarColor, consultarColores } from '../../services/vehiculos.service'
+import { registrarVehiculo, registrarColor, consultarColores, asociarFotoPrincipal, asociarFotoSecundaria } from '../../services/vehiculos.service'
 import { subirFotoVehiculo } from '../../services/archivos.service'
 import {consultaGeneralSucursales} from '../../services/sucursales.service'
 import {consultarMarcas} from '../../services/marcas.service'
@@ -117,20 +117,29 @@ export default function VehiculoForm({ onGuardado }) {
             if (fotoPrincipal) {
                 const formData = new FormData()
                 formData.append('file', fotoPrincipal)
-                const archivoResp = await subirFotoVehiculo(formData)
-                console.log("ArchivoRESP: ", archivoResp);
-                await api.put(`/vehiculos/${idVehiculo}/foto-principal`, {
-                    idArchivo: archivoResp.detalles.id,
-                })
+
+                let archivoResp
+                try {
+                    archivoResp = await subirFotoVehiculo(formData)
+                } catch (uploadErr) {
+                    throw new Error('Error al subir la foto principal: ' + (uploadErr?.response?.data?.mensaje || uploadErr.message))
+                }
+
+                // Verificar que se obtuvo el ID antes de asociar
+                const idArchivo = archivoResp?.detalles?.id
+                if (!idArchivo) throw new Error('No se recibió el ID del archivo subido')
+
+                await asociarFotoPrincipal(idVehiculo, idArchivo)  // desde vehiculos.service
             }
 
             for (const foto of fotosSecundarias) {
                 const formData = new FormData()
                 formData.append('file', foto)
                 const archivoResp = await subirFotoVehiculo(formData)
-                await api.put(`/vehiculos/${idVehiculo}/fotos-secundarias`, {
-                    idArchivo: archivoResp.detalles.id,
-                })
+                const idArchivo = archivoResp?.detalles?.id
+                if (idArchivo) {
+                    await asociarFotoSecundaria(idVehiculo, idArchivo)  // desde vehiculos.service
+                }
             }
 
             setExito(true)
@@ -145,6 +154,7 @@ export default function VehiculoForm({ onGuardado }) {
             setError(
                 err?.response?.data?.mensaje ||
                 err?.response?.data?.errores?.[0]?.msg ||
+                err?.message ||
                 'Ocurrió un error al registrar el vehículo.'
             )
         } finally {
