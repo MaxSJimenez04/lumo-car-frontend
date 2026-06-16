@@ -9,6 +9,7 @@ function MainLayout() {
     const [rolUsuario, setRol] = useState("")
     const [nombre, setNombre] = useState("")
     const [usuario, setUsuario] = useState("")
+    const [idUsuario, setIdUsuario] = useState(null)
     const navigate = useNavigate();
 
     const logout = () => {
@@ -24,6 +25,7 @@ function MainLayout() {
             setRol(respuesta.role)
             setNombre(respuesta.fullName)
             setUsuario(respuesta.username)
+            setIdUsuario(respuesta.id)
         }
         
         document.body.classList.add("dashboard-body");
@@ -36,10 +38,11 @@ function MainLayout() {
     }, [rolUsuario]);
     return (
         <>
-            <Header 
+            <Header
                 rol={rolUsuario}
                 nombre={nombre}
                 usuario={usuario}
+                idUsuario={idUsuario}
                 logout={logout}
             />
             <Outlet />
