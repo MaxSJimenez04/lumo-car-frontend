@@ -82,6 +82,15 @@ export default function VehiculosView() {
 
     return (
         <div className="filtros">
+            {!modoCliente && (
+                <button
+                    className="btn-nuevo-vehiculo"
+                    onClick={() => navigate("/vehiculos/nuevo")}
+                >
+                    + Nuevo vehículo
+                </button>
+            )}
+
             <select
                 value={estado}
                 onChange={(e) => setEstado(e.target.value)}
