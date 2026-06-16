@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import GridEmpleados from "../components/empleados/GridEmpleados";
 import {consultarEmpleados, eliminar} from "../services/usuarios.service";
 import {consultarEstados, consultarCiudades, consultarSucursales} from "../services/sucursales.service";
+import Loading from "../components/common/Loading";
 
 export default function EmpleadosView() {
 
@@ -118,7 +119,7 @@ export default function EmpleadosView() {
     };
 
     if (loading) {
-        return <p>Cargando...</p>;
+        return <Loading message="Cargando empleados..." fullPage={true} />;
     }
 
     return (

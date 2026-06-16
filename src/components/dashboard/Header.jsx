@@ -4,40 +4,41 @@ import NotificacionesPanel from "./NotificacionesPanel";
 
 export default function Header({rol, nombre, usuario, idUsuario, logout}){
     const location = useLocation();
-    
+
+    // Estructura de menús por rol (se simplifican los menús removiendo desplegables y opciones extra)
     const menus = {
         Cliente: [
-            {texto: "Inicio", ruta: "/dashboard"},
-            {texto: "Sucursales", ruta: "/sucursales"},
-            {texto: "Vehículos", ruta: "/vehiculos"},
-            {texto: "Historial", ruta: "/"}
+            { texto: "Inicio", ruta: "/dashboard" },
+            { texto: "Sucursales", ruta: "/sucursales" },
+            { texto: "Vehículos", ruta: "/vehiculos" },
+            { texto: "Historial", ruta: "/" }
         ],
 
         Administrador: [
-            {texto: "Inicio", ruta:"/dashboard"},
-            {texto: "Vehículos", ruta: "/vehiculos"},
+            { texto: "Inicio", ruta: "/dashboard" },
+            { texto: "Vehículos", ruta: "/vehiculos" }
         ],
 
-        S_Administrador:[
-            {texto: "Inicio", ruta: "/dashboard"},
-            {texto: "Estadisticas", ruta: "/"},
-            {texto: "Vehículos", ruta: "/vehiculos"},
-            {texto: "Empleados", ruta: "/empleados"}
+        S_Administrador: [
+            { texto: "Inicio", ruta: "/dashboard" },
+            { texto: "Estadisticas", ruta: "/" },
+            { texto: "Vehículos", ruta: "/vehiculos" },
+            { texto: "Empleados", ruta: "/empleados" }
         ]
-    }
+    };
 
     const isActive = (ruta) => {
         return location.pathname === ruta;
     };
 
-    return(
+    return (
         <header className="app-header">
             <Link to="/dashboard" className="logo-link">
                 <h1 className="lumo-header-logo">LUMO</h1>
             </Link>
             
-            <nav>
-                {menus[rol]?.map(opcion => (
+            <nav className="header-nav">
+                {menus[rol]?.map((opcion) => (
                     <Link
                         key={opcion.ruta}
                         to={opcion.ruta}
@@ -53,9 +54,10 @@ export default function Header({rol, nombre, usuario, idUsuario, logout}){
                 <UserMenu
                     usuario={usuario}
                     nombre={nombre}
+                    rol={rol}
                     onLogout={logout}
                 />
             </div>
         </header>
-    )
+    );
 }

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { consultarFoto } from "../../services/usuarios.service";
 
-export default function UserMenu({ usuario, nombre, onLogout }) {
+export default function UserMenu({ usuario, nombre, rol, onLogout }) {
 
     const [imagenPerfil, setFoto] = useState(null)
 
@@ -43,13 +43,17 @@ export default function UserMenu({ usuario, nombre, onLogout }) {
                     Mi cuenta
                 </Link>
 
-                <Link to="/">
-                    Historial
-                </Link>
+                {rol === "Cliente" && (
+                    <>
+                        <Link to="/">
+                            Historial
+                        </Link>
 
-                <Link to="/">
-                    Suscripciones
-                </Link>
+                        <Link to="/">
+                            Suscripciones
+                        </Link>
+                    </>
+                )}
 
                 <button onClick={onLogout}>
                     Cerrar Sesión

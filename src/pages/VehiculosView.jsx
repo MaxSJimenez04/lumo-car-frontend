@@ -4,6 +4,7 @@ import GridVehiculos from "../components/vehiculos/GridVehiculos"
 import { eliminarVehiculo } from "../services/vehiculos.service"
 import { consultarEstados, consultarCiudades, consultarSucursales } from "../services/sucursales.service"
 import { esCliente } from "../utils/auth"
+import Loading from "../components/common/Loading"
 
 
 export default function VehiculosView() {
@@ -78,7 +79,7 @@ export default function VehiculosView() {
         }
     }
 
-    if (loading) return <p>Cargando...</p>
+    if (loading) return <Loading message="Cargando vehículos..." fullPage={true} />
 
     return (
         <div className="seccion">
