@@ -15,7 +15,14 @@ export const crearRenta = async function(datosRenta) {
 
 export const obtenerHistorial = async function(idUsuario) {
     const respuesta = await api.get(API_BASE_URL + "/historial/" + idUsuario)
-    return respuesta.data
+    const data = respuesta.data
+    const arr = Array.isArray(data) ? data : (data?.datos ?? data?.$values ?? [])
+    const seen = new Set()
+    return arr.filter((r) => {
+        if (seen.has(r.id)) return false
+        seen.add(r.id)
+        return true
+    })
 }
 
 export const finalizarRenta = async function(idRenta) {

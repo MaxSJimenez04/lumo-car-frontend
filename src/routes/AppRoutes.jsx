@@ -11,6 +11,7 @@ import VehiculosView from "../pages/VehiculosView"
 import SucursalesView from "../pages/SucursalesView"
 import RegistrarVehiculoView from "../pages/RegistrarVehiculoView"
 import EditarVehiculoView from "../pages/EditarVehiculoView"
+import HistorialView from "../pages/HistorialView"
 
 function AppRoutes() {
     return (
@@ -30,6 +31,7 @@ function AppRoutes() {
                 <Route path="/sucursales" element={<SucursalesView/>}/>
                 <Route path="/vehiculos/nuevo" element={<RegistrarVehiculoView/>}/>
                 <Route path="/vehiculos/editar" element={<EditarVehiculoView/>}/>
+                <Route path="/historial" element={<HistorialView/>}/>
             </Route>
 
         </Routes>
