@@ -11,7 +11,7 @@ export default function Header({rol, nombre, usuario, idUsuario, logout}){
             { texto: "Inicio", ruta: "/dashboard" },
             { texto: "Sucursales", ruta: "/sucursales" },
             { texto: "Vehículos", ruta: "/vehiculos" },
-            { texto: "Historial", ruta: "/historial" }
+            { texto: "Mis rentas", ruta: "/historial" }
         ],
 
         Administrador: [
