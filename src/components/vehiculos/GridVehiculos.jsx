@@ -18,7 +18,6 @@ export default function GridVehiculos({
 
     // Cargar vehículos al montar o cuando cambia la sucursal
     useEffect(() => {
-        if (!idSucursal) return
         setCargando(true)
         setError(null)
 
