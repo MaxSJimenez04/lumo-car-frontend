@@ -50,7 +50,7 @@ export default function Header({rol, nombre, usuario, idUsuario, logout}){
             </nav>
 
             <div className="header-right">
-                <NotificacionesPanel idUsuario={idUsuario} />
+                {rol === "Cliente" && <NotificacionesPanel idUsuario={idUsuario} />}
                 <UserMenu
                     usuario={usuario}
                     nombre={nombre}
