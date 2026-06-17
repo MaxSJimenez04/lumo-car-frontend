@@ -23,7 +23,9 @@ export const registrarVehiculo = async function(datosVehiculo) {
 }
 
 export const consultarPorSucursal = async function(idSucursal) {
-    const respuesta = await api.get(API_BASE_URL + "/", { params: { idSucursal } })
+    const respuesta = await api.get(API_BASE_URL + "/", { 
+        params: idSucursal ? { idSucursal } :{}
+    })
     return respuesta.data
 }
 
