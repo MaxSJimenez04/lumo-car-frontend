@@ -4,12 +4,7 @@ import RegistroEmpleadoForm from "../components/crear-cuenta/RegistroEmpleadoFor
 export default function CrearCuentaEmpleadoView() {
     return (
         <>
-            <RegistroCard
-                title="Registrar Empleado"
-                subtitle="Por favor completa este formulario"
-            >
-                <RegistroEmpleadoForm idRol={2}/>
-            </RegistroCard>
+            <RegistroEmpleadoForm idRol={2}/>
         </>
     )
 }
