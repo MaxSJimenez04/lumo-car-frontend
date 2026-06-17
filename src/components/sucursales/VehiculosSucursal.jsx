@@ -53,8 +53,9 @@ export default function VehiculosSucursal({ sucursal, onCerrar }) {
                     vehiculo={vehiculoModal}
                     modoCliente={true}
                     onCerrar={() => setVehiculoModal(null)}
-                    onReservar={({ vehiculo, fechaInicio, fechaFin }) => {
-                        console.log("Reservar:", vehiculo.id, fechaInicio, fechaFin)
+                    onExito={() => {
+                        setVehiculos((prev) => prev.filter((v) => v.id !== vehiculoModal.id))
+                        setVehiculoModal(null)
                     }}
                 />
             )}

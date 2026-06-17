@@ -2,6 +2,11 @@ import api from "../api/axiosClient"
 
 const API_BASE_URL = "/rentas"
 
+export const calcularRenta = async function(datos) {
+    const respuesta = await api.post(API_BASE_URL + "/calcular", datos)
+    return respuesta.data
+}
+
 export const crearRenta = async function(datosRenta) {
     const respuesta = await api.post(API_BASE_URL+"/", datosRenta)
 

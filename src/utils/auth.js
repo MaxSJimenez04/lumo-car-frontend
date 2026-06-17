@@ -14,8 +14,19 @@ export const eliminarToken = () => {
     localStorage.removeItem(TOKEN_KEY)
 };
 
+export const tokenExpirado = () => {
+    const token = obtenerToken()
+    if (!token) return true
+    try {
+        const { exp } = jwtDecode(token)
+        return exp ? Date.now() >= exp * 1000 : false
+    } catch {
+        return true
+    }
+}
+
 export const estaAutenticado = () => {
-    return !!obtenerToken();
+    return !!obtenerToken() && !tokenExpirado()
 };
 
 export const obtenerDatosToken = () => {
@@ -29,6 +40,11 @@ export const obtenerDatosToken = () => {
 
         const decoded = jwtDecode(token);
         return {
+            id:
+                decoded.sub ||
+                decoded.nameid ||
+                decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"],
+
             username:
                 decoded.unique_name ||
                 decoded.name ||

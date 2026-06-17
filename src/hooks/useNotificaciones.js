@@ -8,7 +8,7 @@ export function useNotificaciones(idUsuario) {
     // Carga el historial al montar
     useEffect(() => {
         if (!idUsuario) return
-        obtenerNotificaciones(idUsuario)
+        obtenerNotificaciones()
             .then(setNotificaciones)
             .catch(console.error)
     }, [idUsuario])
@@ -49,7 +49,7 @@ export function useNotificaciones(idUsuario) {
     }
 
     const leerTodas = async () => {
-        await marcarTodasLeidas(idUsuario)
+        await marcarTodasLeidas()
         setNotificaciones((prev) => prev.map((n) => ({ ...n, leida: true })))
     }
 

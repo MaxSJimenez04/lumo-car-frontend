@@ -693,6 +693,24 @@ body.dashboard-body:has(.dashboard-container) {
     transform: rotate(180deg);
 }
 
+/* Modal de vehículo */
+.mv-fotoMain {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 10px;
+    background: #f3f4f6;
+    display: block;
+}
+
+.mv-thumbnails {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+
 /* Estilos del menú desplegable */
 .header-dropdown-menu {
     position: absolute;

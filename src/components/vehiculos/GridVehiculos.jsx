@@ -111,6 +111,10 @@ export default function GridVehiculos({
                     vehiculo={vehiculoSelec}
                     modoCliente={modoCliente}
                     onCerrar={() => setVehiculoSelec(null)}
+                    onExito={modoCliente ? () => {
+                        setVehiculos((prev) => prev.filter((v) => v.id !== vehiculoSelec.id))
+                        setVehiculoSelec(null)
+                    } : undefined}
                 />
             )}
         </div>
