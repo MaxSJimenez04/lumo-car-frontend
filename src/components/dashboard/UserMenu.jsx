@@ -52,7 +52,7 @@ export default function UserMenu({ usuario, nombre, rol, onLogout }) {
                             Historial
                         </Link>
 
-                        <Link to="/">
+                        <Link to="/suscripciones">
                             Suscripciones
                         </Link>
                     </>

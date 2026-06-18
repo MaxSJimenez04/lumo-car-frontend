@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react"
 import SuscripcionCard from "./SuscripcionCard"
-// Importaremos el Row y el Modal más adelante
-// import RowSuscripcion from "./RowSuscripcion"
 import ModalSuscripcion from "./ModalSuscripcion"
 import { suscripcionesService } from "../../services/suscripciones.service"
 
@@ -10,31 +8,35 @@ export default function GridSuscripciones({ vista, modoCliente }) {
     const [planSelec, setPlanSelec]         = useState(null)
     const [cargando, setCargando]           = useState(false)
     const [error, setError]                 = useState(null)
+    const [planActual, setPlanActual]       = useState(null)
 
-    // Cargar planes al montar el componente
     useEffect(() => {
         setCargando(true)
         setError(null)
 
-        suscripcionesService.getPlanes()
-            .then((data) => {
-                // Ajustamos dependiendo de si la API devuelve el arreglo directo o dentro de una propiedad
-                setPlanes(Array.isArray(data) ? data : data.planes || [])
-            })
-            .catch(() => setError("No se pudieron cargar los planes de suscripción."))
-            .finally(() => setCargando(false))
-    }, [])
+        Promise.all([
+            suscripcionesService.getPlanes(),
+            modoCliente ? suscripcionesService.getMiSuscripcion() : Promise.resolve(null)
+        ])
+        .then(([dataPlanes, dataSuscripcion]) => {
+            setPlanes(Array.isArray(dataPlanes) ? dataPlanes : dataPlanes.planes || [])
+            
+            if (dataSuscripcion && dataSuscripcion.idSuscripcion) {
+                setPlanActual(dataSuscripcion.idSuscripcion);
+            }
+        })
+        .catch(() => setError("No se pudieron cargar los datos. Revisa tu conexión."))
+        .finally(() => setCargando(false))
+    }, [modoCliente])
 
     return (
         <div style={styles.wrapper}>
-            {/* Estados de carga / error / vacío */}
             {cargando && <p style={styles.msg}>Cargando planes de suscripción…</p>}
             {error   && <p style={{ ...styles.msg, color: "#dc2626" }}>{error}</p>}
             {!cargando && !error && planes.length === 0 && (
                 <p style={styles.msg}>No hay planes de suscripción disponibles en este momento.</p>
             )}
 
-            {/* Vista: Cards */}
             {!cargando && !error && vista === "cards" && (
                 <div style={styles.grid}>
                     {planes.map((plan) => (
@@ -42,29 +44,29 @@ export default function GridSuscripciones({ vista, modoCliente }) {
                             key={plan.idSuscripcion || plan.id}
                             plan={plan}
                             onConsultar={setPlanSelec}
+                            esMiPlan={planActual === (plan.idSuscripcion || plan.id)}
                         />
                     ))}
                 </div>
             )}
 
-            {/* Vista: Tabla (La implementaremos después) */}
             {!cargando && !error && vista === "tabla" && (
                 <div style={styles.tableWrapper}>
                     <p style={styles.msg}>Vista de tabla en construcción...</p>
                 </div>
             )}
 
-            {/* Modal de detalle */}
             {planSelec && (
                 <ModalSuscripcion
-                    plan={planSelec}
-                    onCerrar={() => setPlanSelec(null)}
-                    onExito={() => {
-                    // Aquí puedes poner lógica de recarga si lo necesitas
-                    setPlanSelec(null)
-                }}
-            />
-            )}
+                plan={planSelec}
+                esCambio={planActual !== null}
+                onCerrar={() => setPlanSelec(null)}
+                onExito={() => {
+                    setPlanSelec(null);
+                    window.location.reload(); 
+            }}
+        />
+    )}
         </div>
     )
 }
